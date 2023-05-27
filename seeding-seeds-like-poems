@@ -1,0 +1,71 @@
+from tkinter import Tk, Label, Entry, Button, Scrollbar, Text, END
+from PIL import ImageTk, Image
+import random
+
+def printSomething():
+    with open('help.txt') as f:
+        r = f.read()
+    text.delete(1.0, END)
+    text.insert(END, r)
+
+def clearFile():
+    with open("help.txt", "w") as f:
+        f.truncate(0)
+    text.delete(1.0, END)
+
+def changeTextColor():
+    color = generateRandomColor()
+    text.config(fg=color)
+
+def writetofile():
+    content_list = [inputVarName.get(), inputVarName2.get()]
+    with open("help.txt", "a") as f:
+        for item in content_list:
+            f.write("%s\n" % item)
+
+def generateRandomColor():
+    r = lambda: random.randint(0, 255)
+    color = '#{:02x}{:02x}{:02x}'.format(r(), r(), r())
+    return color
+
+
+root = Tk()
+root.attributes("-fullscreen", True)
+root.title("Text File Manager")
+root.configure(bg='#ff007f')
+
+label1 = Label(root, text="SEEDLING", bg='blue')
+label1.pack()
+
+inputVarName = Entry(root)
+inputVarName.insert(END, "###")
+inputVarName.pack()
+
+label2 = Label(root, text="SEED", bg='blue')
+label2.pack()
+
+inputVarName2 = Entry(root)
+inputVarName2.pack()
+
+
+addButton = Button(root, text="Add Data", command=writetofile, bg='pink', fg='hotpink')
+addButton.pack()
+
+viewButton = Button(root, text="View Data", command=printSomething, bg='pink', fg='hotpink')
+viewButton.pack()
+
+clearButton = Button(root, text="Clear File", command=clearFile, bg='gray', fg='hotpink')
+clearButton.pack()
+
+colorButton = Button(root, text="Change Text Color", command=changeTextColor, bg='white', fg='hotpink')
+colorButton.pack()
+
+text = Text(root)
+text.pack(fill="both", expand=True)
+
+scrollbar = Scrollbar(text)
+scrollbar.pack(side="right", fill="y")
+text.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=text.yview)
+
+root.mainloop()

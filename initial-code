@@ -1,0 +1,48 @@
+from tkinter import *
+
+root = Tk()
+root.geometry("700x700")
+ivn = StringVar()
+inputVarName = Entry(root, textvariable=str(ivn))
+ivn.set(str("text1"))
+inputVarName.grid(row=0, column=0)
+
+ivn2 = StringVar()
+inputVarName2 = Entry(root, textvariable=str(ivn2))
+ivn2.set(str("text2"))
+inputVarName2.grid(row=1, column=0)
+
+
+def printSomething():
+    with open('help.txt') as f:
+        r = f.read()
+    label = Label(root, text=r)
+    label.grid()
+
+
+def checkdata():
+    with open('help.txt') as f:
+        r = f.read()
+    return r.split("\n")
+
+
+def writetofile():
+    exist_data = checkdata()
+    content_list = [ivn.get(), ivn2.get()]
+    with open("help.txt", "a") as f:
+        for item in content_list:
+            if item in exist_data:
+                msg = "Already exists " + item
+                label = Label(root, text=msg)
+                label.grid()
+            elif item not in exist_data:
+                f.write("%s\n" % item)
+
+
+applyButton = Button(root, text="Add Data", command=writetofile)
+applyButton.grid(row=2, column=1)
+
+viewButton = Button(root, text='View Data', command=printSomething)
+viewButton.grid(row=3, column=1)
+
+root.mainloop()
