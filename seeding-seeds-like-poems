@@ -3,7 +3,7 @@ from PIL import ImageTk, Image
 import random
 
 def printSomething():
-    with open('help.txt') as f:
+    with open('poems.txt') as f:
         r = f.read()
     text.delete(1.0, END)
     text.insert(END, r)
